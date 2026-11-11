@@ -3,63 +3,17 @@ import { SITE_AUTHOR } from '../consts';
 const year = new Date().getFullYear();
 ---
 
-<footer class="colophon">
-	<div class="container inner">
-		<p class="note">
-			© {year} {SITE_AUTHOR}
-			<span class="dot">·</span>
-			用 <a href="https://astro.build">Astro</a> 手写
-			<span class="dot">·</span>
-			<a href="/rss.xml">RSS</a>
-		</p>
-		<a class="top" href="#top">回到顶部 ↑</a>
+<footer class="site-foot">
+	<div class="container small">
+		© {year} {SITE_AUTHOR} ·
+		<a href="/rss.xml">RSS</a> ·
+		<a href="https://github.com/KaleLjl">GitHub</a>
 	</div>
 </footer>
 
 <style>
-	.colophon {
-		border-top: 1px solid var(--rule);
-		padding-block: 2rem 2.5rem;
-	}
-
-	.inner {
-		display: flex;
-		flex-wrap: wrap;
-		justify-content: space-between;
-		align-items: baseline;
-		gap: 0.75rem;
-	}
-
-	.note {
-		margin: 0;
-		font-family: var(--font-mono);
-		font-size: 0.72rem;
-		letter-spacing: 0.02em;
+	.site-foot {
+		padding: 2rem 0 3rem;
 		color: var(--ink-faint);
-	}
-
-	.dot {
-		margin-inline: 0.35em;
-		color: var(--rule-strong);
-	}
-
-	.note a {
-		color: var(--ink-muted);
-		border-bottom: 1px solid var(--rule);
-	}
-
-	.note a:hover {
-		color: var(--accent);
-		border-bottom-color: var(--accent);
-	}
-
-	.top {
-		font-family: var(--font-mono);
-		font-size: 0.72rem;
-		color: var(--ink-faint);
-	}
-
-	.top:hover {
-		color: var(--accent);
 	}
 </style>

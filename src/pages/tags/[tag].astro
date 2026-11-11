@@ -19,41 +19,18 @@ const { tag, count, posts } = Astro.props;
 ---
 
 <BaseLayout title={`标签：${tag}`} description={`标签「${tag}」下的 ${count} 篇文章。`}>
-	<p class="back"><a href="/tags/">← 标签索引</a></p>
+	<p class="label">标签</p>
+	<p class="small intro">
+		{tag}（{count} 篇） · <a href="/tags/">全部标签</a>
+	</p>
 
-	<header class="page-head">
-		<p class="kicker">Tagged</p>
-		<h1>{tag}</h1>
-		<p class="meta">{count} 篇文章</p>
-	</header>
-
-	<div class="rows">
-		{posts.map((post, i) => <PostRow post={post} index={i + 1} showDraft />)}
+	<div>
+		{posts.map((post) => <PostRow post={post} showDraft />)}
 	</div>
 </BaseLayout>
 
 <style>
-	.back {
-		margin: 0 0 1.25rem;
-		font-family: var(--font-mono);
-		font-size: 0.72rem;
-	}
-
-	.back a {
-		color: var(--ink-faint);
-	}
-
-	.back a:hover {
-		color: var(--accent);
-	}
-
-	.page-head {
-		padding-bottom: 1.5rem;
-		border-bottom: 1px solid var(--rule-strong);
-	}
-
-	.page-head h1 {
-		margin: 0 0 0.4rem;
-		font-size: clamp(1.6rem, 4.5vw, 2rem);
+	.intro {
+		margin: 0 0 1.5rem;
 	}
 </style>

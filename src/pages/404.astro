@@ -3,49 +3,7 @@ import BaseLayout from '../layouts/BaseLayout.astro';
 ---
 
 <BaseLayout title="页面不存在" description="这个页面走丢了。">
-	<div class="wrap">
-		<p class="kicker">Error 404</p>
-		<h1>这个页面走丢了</h1>
-		<p class="hint">可能是链接写错了，或者文章被重命名过。</p>
-		<p class="actions">
-			<a href="/">回首页</a>
-			<a href="/posts/">看看全部文章</a>
-		</p>
-	</div>
+	<p class="label">404</p>
+	<p>这个页面走丢了。可能是链接写错了，或者文章被重命名过。</p>
+	<p class="small"><a href="/">回首页</a> · <a href="/posts/">全部文章</a></p>
 </BaseLayout>
-
-<style>
-	.wrap {
-		max-width: var(--width-reading);
-		margin: 0 auto;
-		padding: 4rem 0;
-	}
-
-	h1 {
-		font-size: clamp(1.6rem, 4.5vw, 2.1rem);
-		margin: 0 0 0.75rem;
-	}
-
-	.hint {
-		color: var(--ink-muted);
-		font-family: var(--font-serif);
-		margin-bottom: 2.5rem;
-	}
-
-	.actions {
-		display: flex;
-		gap: 1.75rem;
-		font-family: var(--font-mono);
-		font-size: 0.78rem;
-	}
-
-	.actions a {
-		color: var(--ink-muted);
-		border-bottom: 1px solid var(--rule-strong);
-	}
-
-	.actions a:hover {
-		color: var(--accent);
-		border-bottom-color: var(--accent);
-	}
-</style>

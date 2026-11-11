@@ -5,71 +5,45 @@ import { getPosts } from '../../lib/posts';
 
 const posts = await getPosts();
 
-const groups = new Map<string, { post: (typeof posts)[number]; index: number }[]>();
-posts.forEach((post, index) => {
+const groups = new Map<string, typeof posts>();
+for (const post of posts) {
 	const year = String(post.data.pubDate.getUTCFullYear());
-	const bucket = groups.get(year) ?? [];
-	bucket.push({ post, index: index + 1 });
-	groups.set(year, bucket);
-});
+	groups.set(year, [...(groups.get(year) ?? []), post]);
+}
 ---
 
-<BaseLayout title="全部文章" description="按时间倒序排列的全部文章。">
-	<header class="page-head">
-		<p class="kicker">Archive</p>
-		<h1>全部文章</h1>
-		<p class="meta">共 {posts.length} 篇，按时间倒序</p>
-	</header>
-
-	{
-		posts.length === 0 && (
-			<p class="empty">
-				还没有文章。往 <code>src/content/posts/</code> 放一个 <code>.md</code> 文件就会出现在这里。
-			</p>
-		)
-	}
+<BaseLayout title="归档" description="按时间倒序排列的全部文章。">
+	<p class="label">归档</p>
+	<p class="small intro">
+		共 {posts.length} 篇，按时间倒序。也可以回<a href="/">首页</a>看完整列表。
+	</p>
 
 	{
 		[...groups.entries()].map(([year, items]) => (
 			<section class="year">
 				<h2 class="year-label">{year}</h2>
-				<div class="rows">
-					{items.map(({ post, index }) => (
-						<PostRow post={post} index={index} showDraft />
-					))}
-				</div>
+				{items.map((post) => (
+					<PostRow post={post} variant="archive" showDraft />
+				))}
 			</section>
 		))
 	}
 </BaseLayout>
 
 <style>
-	.page-head {
-		padding-bottom: 1.75rem;
-		border-bottom: 1px solid var(--rule-strong);
-	}
-
-	.page-head h1 {
-		margin: 0 0 0.5rem;
-		font-size: clamp(1.8rem, 5vw, 2.3rem);
+	.intro {
+		margin: 0 0 1.75rem;
 	}
 
 	.year {
-		padding-top: 2rem;
+		margin-bottom: 1.5rem;
 	}
 
 	.year-label {
-		margin: 0 0 0.25rem;
-		font-family: var(--font-mono);
+		margin: 0 0 0.5rem;
+		font-family: var(--font-ui);
 		font-size: 0.72rem;
-		font-weight: 400;
-		letter-spacing: 0.14em;
-		color: var(--ink-faint);
-	}
-
-	.empty {
-		padding: 2rem 0;
-		font-family: var(--font-serif);
+		font-weight: bold;
+		letter-spacing: 0.08em;
 		color: var(--ink-muted);
-	}
-</style>
+	}</style>

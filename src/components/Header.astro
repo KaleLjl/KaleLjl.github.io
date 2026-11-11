@@ -1,51 +1,30 @@
 ---
-import { NAV_LINKS, SOCIAL_LINKS, SITE_WORDMARK } from '../consts';
+import { NAV_LINKS, SITE_WORDMARK } from '../consts';
 
 const path = Astro.url.pathname;
 const isActive = (href: string) => (href === '/' ? path === '/' : path.startsWith(href));
-const liveSocial = SOCIAL_LINKS.filter((link) => link.label !== 'RSS');
 ---
 
-<header class="masthead">
-	<div class="container bar">
-		<a class="wordmark" href="/">
-			<span class="wordmark-main">{SITE_WORDMARK.main}</span>
-			<span class="wordmark-sub">{SITE_WORDMARK.sub}</span>
-		</a>
+<header class="site-head">
+	<div class="container head-inner">
+		<a class="wordmark" href="/">{SITE_WORDMARK.main.toUpperCase()}</a>
 
 		<nav class="nav" aria-label="主导航">
 			{
 				NAV_LINKS.map((link) => (
-					<a href={link.href} aria-current={isActive(link.href) ? 'page' : undefined}>
+					<a
+						href={link.href}
+						aria-current={isActive(link.href) ? 'page' : undefined}
+						class:list={[{ current: isActive(link.href) }]}
+					>
 						{link.label}
 					</a>
 				))
 			}
+			<a href="/posts/">归档</a>
+			<a href="/rss.xml">RSS</a>
+			<button id="theme-toggle" class="toggle" type="button" title="切换深浅色">深浅</button>
 		</nav>
-
-		<div class="actions">
-			{liveSocial.map((link) => (
-				<a class="aside-link" href={link.href} target="_blank" rel="noopener noreferrer">
-					{link.label}
-				</a>
-			))}
-			<a class="aside-link" href="/rss.xml">RSS</a>
-			<button
-				id="theme-toggle"
-				class="toggle"
-				type="button"
-				aria-label="切换深浅色"
-				title="切换深浅色"
-			>
-				<svg class="i-sun" viewBox="0 0 24 24" aria-hidden="true">
-					<circle cx="12" cy="12" r="4"></circle>
-					<path d="M12 2.8v2M12 19.2v2M2.8 12h2M19.2 12h2M5.4 5.4l1.4 1.4M17.2 17.2l1.4 1.4M18.6 5.4l-1.4 1.4M6.8 17.2l-1.4 1.4"></path>
-				</svg>
-				<svg class="i-moon" viewBox="0 0 24 24" aria-hidden="true">
-					<path d="M20.3 14.9A8.7 8.7 0 1 1 9.1 3.7a7.1 7.1 0 0 0 11.2 11.2z"></path>
-				</svg>
-			</button>
-		</div>
 	</div>
 </header>
 
@@ -65,122 +44,60 @@ const liveSocial = SOCIAL_LINKS.filter((link) => link.label !== 'RSS');
 </script>
 
 <style>
-	.masthead {
-		position: sticky;
-		top: 0;
-		z-index: 50;
-		background: color-mix(in srgb, var(--paper) 88%, transparent);
-		backdrop-filter: saturate(140%) blur(10px);
-		border-bottom: 1px solid var(--rule);
+	.site-head {
+		padding: 1.75rem 0 0.5rem;
 	}
 
-	.bar {
+	.head-inner {
 		display: flex;
-		align-items: center;
-		gap: 1.75rem;
-		height: 3.9rem;
+		flex-wrap: wrap;
+		align-items: baseline;
+		gap: 0.5rem 1.5rem;
 	}
 
 	.wordmark {
-		display: inline-flex;
-		align-items: baseline;
-		gap: 0.4rem;
-	}
-
-	.wordmark-main {
-		font-family: var(--font-serif);
-		font-size: 1.2rem;
-		font-weight: 600;
-		letter-spacing: 0.02em;
-		color: var(--ink);
-	}
-
-	.wordmark-sub {
+		font-family: var(--font-ui);
 		font-size: 0.72rem;
-		letter-spacing: 0.14em;
+		font-weight: bold;
+		letter-spacing: 0.35em;
 		color: var(--ink-faint);
+		text-decoration: none;
+	}
+
+	.wordmark:hover {
+		color: var(--ink);
 	}
 
 	.nav {
 		display: flex;
-		gap: 1.15rem;
-		margin-right: auto;
+		flex-wrap: wrap;
+		align-items: baseline;
+		gap: 0.9rem;
+		font-family: var(--font-ui);
+		font-size: 0.8125rem;
 	}
 
 	.nav a {
-		font-size: 0.82rem;
-		letter-spacing: 0.06em;
-		color: var(--ink-muted);
-		padding-bottom: 1px;
-		border-bottom: 1px solid transparent;
+		color: var(--link);
 	}
 
-	.nav a:hover {
+	.nav a.current {
 		color: var(--ink);
-	}
-
-	.nav a[aria-current='page'] {
-		color: var(--accent);
-		border-bottom-color: var(--accent);
-	}
-
-	.actions {
-		display: flex;
-		align-items: center;
-		gap: 1rem;
-	}
-
-	.aside-link {
-		font-family: var(--font-mono);
-		font-size: 0.72rem;
-		letter-spacing: 0.04em;
-		color: var(--ink-faint);
-	}
-
-	.aside-link:hover {
-		color: var(--accent);
+		text-decoration: none;
 	}
 
 	.toggle {
-		display: grid;
-		place-items: center;
-		width: 1.75rem;
-		height: 1.75rem;
 		padding: 0;
 		border: none;
 		background: none;
+		font-family: var(--font-ui);
+		font-size: 0.8125rem;
 		color: var(--ink-faint);
 		cursor: pointer;
 	}
 
 	.toggle:hover {
-		color: var(--accent);
-	}
-
-	.toggle svg {
-		width: 0.95rem;
-		height: 0.95rem;
-		fill: none;
-		stroke: currentColor;
-		stroke-width: 1.6;
-		stroke-linecap: round;
-	}
-
-	html[data-theme='dark'] .i-sun,
-	:global(html:not([data-theme='dark'])) .i-moon {
-		display: none;
-	}
-
-	@media (max-width: 620px) {
-		.bar {
-			gap: 1rem;
-		}
-		.wordmark-sub,
-		.aside-link {
-			display: none;
-		}
-		.nav {
-			gap: 0.9rem;
-		}
+		color: var(--link);
+		text-decoration: underline;
 	}
 </style>

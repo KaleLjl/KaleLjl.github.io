@@ -4,10 +4,7 @@ import { SITE_AUTHOR } from '../consts';
 ---
 
 <BaseLayout title="关于" description="关于这个博客和它的作者。">
-	<header class="page-head">
-		<p class="kicker">About</p>
-		<h1>关于</h1>
-	</header>
+	<p class="label">关于</p>
 
 	<article class="prose">
 		<p>
@@ -15,35 +12,16 @@ import { SITE_AUTHOR } from '../consts';
 			发出来才算真正写完。
 		</p>
 
-		<h3>这个博客</h3>
 		<p>
-			用 <a href="https://astro.build">Astro</a> 手写，源码在
+			这个站点用 <a href="https://astro.build">Astro</a> 搭建，源码在
 			<a href="https://github.com/KaleLjl">GitHub</a>，通过 GitHub Pages 发布。
 			没有数据库、没有后端服务，每篇文章就是一个 Markdown 文件。
 		</p>
 
-		<h3>订阅</h3>
 		<p>
-			可以直接订阅 <a href="/rss.xml">RSS</a>，用任意阅读器追踪更新。
-		</p>
-
-		<h3>联系</h3>
-		<p>
-			有想法欢迎来 <a href="https://github.com/KaleLjl">GitHub</a> 找我聊聊。
+			排版参考了 <a href="https://www.paulgraham.com/articles.html">Paul Graham</a>
+			的网站：白底黑字，Times 正文，蓝色下划线链接，没有别的东西。
+			想追更新可以订阅 <a href="/rss.xml">RSS</a>。
 		</p>
 	</article>
 </BaseLayout>
-
-<style>
-	.page-head {
-		max-width: var(--width-reading);
-		margin: 0 auto 1.75rem;
-		padding-bottom: 1.25rem;
-		border-bottom: 1px solid var(--rule-strong);
-	}
-
-	.page-head h1 {
-		margin: 0;
-		font-size: clamp(1.8rem, 5vw, 2.3rem);
-	}
-</style>

@@ -1,180 +1,52 @@
 ---
 import BaseLayout from '../layouts/BaseLayout.astro';
 import PostRow from '../components/PostRow.astro';
-import FormattedDate from '../components/FormattedDate.astro';
-import { getPosts, getTags, postPath, readingTime, tagSlug } from '../lib/posts';
-import { SITE_TITLE, SITE_DESCRIPTION } from '../consts';
+import { getPosts, postPath } from '../lib/posts';
 
 const posts = await getPosts();
-const tags = await getTags();
 
-const [lead, ...rest] = posts;
-const now = new Date();
-const issue = `${now.getFullYear()} · ${String(now.getMonth() + 1).padStart(2, '0')}`;
+// 推荐入口：最新的两篇
+const picks = posts.slice(0, 2);
 ---
 
 <BaseLayout>
-	<header class="cover">
-		<p class="kicker">Issue {issue}</p>
-		<h1>{SITE_TITLE}</h1>
-		<p class="sub">{SITE_DESCRIPTION}</p>
-		<p class="stats">
-			共 {posts.length} 篇 · {tags.length} 个标签 ·
-			<a href="/rss.xml">RSS</a>
-		</p>
-	</header>
+	<p class="label">随笔</p>
 
 	{
-		lead && (
-			<section class="lead">
-				<p class="kicker">Latest</p>
-				<h2 class="lead-title">
-					<a href={postPath(lead)}>{lead.data.title}</a>
-				</h2>
-				<p class="lead-desc">{lead.data.description}</p>
-				<p class="meta">
-					<FormattedDate date={lead.data.pubDate} />
-					<span aria-hidden="true">/</span>
-					<span>{readingTime(lead.body)} 分钟</span>
-					{lead.data.tags.map((tag) => (
-						<a class="tag" href={`/tags/${tagSlug(tag)}/`}>
-							{tag}
-						</a>
-					))}
-				</p>
-			</section>
+		picks.length > 0 && (
+			<p class="small intro">
+				不知道从哪开始？试试
+				{picks.map((post, i) => (
+					<>
+						{i > 0 && (i === picks.length - 1 ? '，或者 ' : '、')}
+						<a href={postPath(post)}>《{post.data.title}》</a>
+					</>
+				))}
+				。
+			</p>
 		)
 	}
 
-	<section class="ledger">
-		<p class="kicker">Index</p>
-		{rest.map((post, i) => <PostRow post={post} index={i + 2} showDraft />)}
-		{rest.length === 0 && (
-			<p class="empty">下一篇还在写。</p>
-		)}
-		<a class="all" href="/posts/">全部文章 →</a>
+	<section class="list">
+		{posts.map((post) => <PostRow post={post} showDraft />)}
+		{posts.length === 0 && <p class="small intro">还没有文章。</p>}
 	</section>
 
-	{
-		tags.length > 0 && (
-			<section class="tags-block">
-				<p class="kicker">Tags</p>
-				<ul class="tag-list">
-					{tags.map(({ tag, count }) => (
-						<li>
-							<a class="tag" href={`/tags/${tagSlug(tag)}/`}>
-								{tag} ({count})
-							</a>
-						</li>
-					))}
-				</ul>
-			</section>
-		)
-	}
+	<p class="small footnote">
+		<a href="/posts/">按时间归档</a> · <a href="/tags/">标签</a> · <a href="/rss.xml">RSS 订阅</a>
+	</p>
 </BaseLayout>
 
 <style>
-	.cover {
-		padding: 1rem 0 2.5rem;
-		border-bottom: 1px solid var(--rule);
+	.intro {
+		margin: 0 0 1.5rem;
 	}
 
-	.cover h1 {
-		margin: 0 0 0.6rem;
-		font-size: clamp(2.1rem, 6vw, 2.9rem);
-		font-weight: 600;
-		line-height: 1.2;
-		letter-spacing: 0.01em;
+	.list {
+		margin-bottom: 2rem;
 	}
 
-	.sub {
-		margin: 0 0 1rem;
-		font-family: var(--font-serif);
-		font-size: 1.05rem;
-		color: var(--ink-soft);
-	}
-
-	.stats {
-		margin: 0;
-		font-family: var(--font-mono);
-		font-size: 0.72rem;
-		color: var(--ink-faint);
-	}
-
-	.stats a {
+	.footnote {
 		color: var(--ink-muted);
-		border-bottom: 1px solid var(--rule);
-	}
-
-	.stats a:hover {
-		color: var(--accent);
-		border-bottom-color: var(--accent);
-	}
-
-	.lead {
-		padding: 2.25rem 0 2.5rem;
-		border-bottom: 1px solid var(--rule);
-	}
-
-	.lead-title {
-		margin: 0 0 0.7rem;
-		font-size: clamp(1.4rem, 3.6vw, 1.75rem);
-		line-height: 1.45;
-	}
-
-	.lead-title a:hover {
-		color: var(--accent);
-	}
-
-	.lead-desc {
-		margin: 0 0 1rem;
-		font-family: var(--font-serif);
-		font-size: 1rem;
-		line-height: 1.85;
-		color: var(--ink-muted);
-	}
-
-	.meta a {
-		margin-left: 0.15rem;
-	}
-
-	.ledger {
-		padding: 2.25rem 0 0;
-	}
-
-	.empty {
-		margin: 0;
-		padding: 1.5rem 0;
-		font-family: var(--font-serif);
-		color: var(--ink-faint);
-	}
-
-	.all {
-		display: inline-block;
-		margin-top: 1.5rem;
-		font-family: var(--font-mono);
-		font-size: 0.75rem;
-		color: var(--ink-muted);
-		border-bottom: 1px solid var(--rule-strong);
-	}
-
-	.all:hover {
-		color: var(--accent);
-		border-bottom-color: var(--accent);
-	}
-
-	.tags-block {
-		margin-top: 3rem;
-		padding-top: 1.75rem;
-		border-top: 1px solid var(--rule);
-	}
-
-	.tag-list {
-		display: flex;
-		flex-wrap: wrap;
-		gap: 1.1rem;
-		margin: 0;
-		padding: 0;
-		list-style: none;
 	}
 </style>
