@@ -1,42 +1,44 @@
 /* ==========================================================================
-   设计变量：改这里就能换整站配色 / 排版
+   Kale 的博客 — 编辑部风格
+   改这里就能换整站气质
    ========================================================================== */
 
 :root {
+	/* 拉丁衬线优先，中文落到宋体；正文混合排版会很自然 */
+	--font-serif:
+		'Songti SC', 'Source Han Serif SC', 'Noto Serif SC', 'STSong', 'SimSun', Georgia,
+		'Iowan Old Style', serif;
 	--font-sans:
 		-apple-system, BlinkMacSystemFont, 'Segoe UI', 'PingFang SC', 'Hiragino Sans GB',
-		'Microsoft YaHei', 'Noto Sans SC', 'Source Han Sans SC', sans-serif;
-	--font-mono:
-		ui-monospace, SFMono-Regular, 'SF Mono', 'JetBrains Mono', Menlo, Consolas,
-		'Liberation Mono', monospace;
+		'Microsoft YaHei', 'Noto Sans SC', sans-serif;
+	--font-mono: ui-monospace, SFMono-Regular, 'SF Mono', Menlo, Consolas, monospace;
 
-	--bg: #fdfdfc;
-	--bg-subtle: #f5f5f3;
-	--bg-code: #f4f4f2;
-	--border: #e5e5e1;
-	--fg: #1c1c1a;
-	--fg-muted: #6f6f69;
-	--fg-faint: #9a9a93;
-	--accent: #0f766e;
-	--accent-soft: rgba(15, 118, 110, 0.1);
+	--paper: #fbfaf7;
+	--paper-sunk: #f4f2ec;
+	--rule: #e2ddd2;
+	--rule-strong: #cfc8b8;
+	--ink: #1a1815;
+	--ink-soft: #4a453d;
+	--ink-muted: #736c60;
+	--ink-faint: #9d9587;
+	--accent: #a03a2a;
+	--accent-soft: rgba(160, 58, 42, 0.08);
 
-	--max-width: 44rem;
-	--wide-width: 62rem;
-	--radius: 10px;
-	--shadow: 0 1px 2px rgba(28, 28, 26, 0.04), 0 8px 24px -12px rgba(28, 28, 26, 0.12);
+	--width-container: 47rem;
+	--width-reading: 39rem;
 }
 
 html[data-theme='dark'] {
-	--bg: #121211;
-	--bg-subtle: #1a1a19;
-	--bg-code: #1c1c1b;
-	--border: #2c2c2a;
-	--fg: #e9e7e3;
-	--fg-muted: #a3a29c;
-	--fg-faint: #77766f;
-	--accent: #5eead4;
-	--accent-soft: rgba(94, 234, 212, 0.12);
-	--shadow: 0 1px 2px rgba(0, 0, 0, 0.3), 0 8px 24px -12px rgba(0, 0, 0, 0.6);
+	--paper: #141311;
+	--paper-sunk: #1b1a17;
+	--rule: #2b2a25;
+	--rule-strong: #3d3b34;
+	--ink: #eae5da;
+	--ink-soft: #c4bdaf;
+	--ink-muted: #a09989;
+	--ink-faint: #7a7365;
+	--accent: #e28c73;
+	--accent-soft: rgba(226, 140, 115, 0.12);
 }
 
 /* ==========================================================================
@@ -52,34 +54,28 @@ html[data-theme='dark'] {
 html {
 	-webkit-text-size-adjust: 100%;
 	scroll-behavior: smooth;
-	scroll-padding-top: 5rem;
+	scroll-padding-top: 6rem;
 }
 
 body {
 	margin: 0;
-	background: var(--bg);
-	color: var(--fg);
+	background: var(--paper);
+	color: var(--ink);
 	font-family: var(--font-sans);
-	font-size: 17px;
-	line-height: 1.75;
+	font-size: 16px;
+	line-height: 1.7;
 	-webkit-font-smoothing: antialiased;
 	text-rendering: optimizeLegibility;
-	transition: background-color 0.2s ease, color 0.2s ease;
+	transition: background-color 0.25s ease, color 0.25s ease;
 }
 
 ::selection {
 	background: var(--accent-soft);
-	color: var(--accent);
 }
 
 a {
-	color: var(--accent);
+	color: inherit;
 	text-decoration: none;
-	text-underline-offset: 3px;
-}
-
-a:hover {
-	text-decoration: underline;
 }
 
 h1,
@@ -88,11 +84,12 @@ h3,
 h4,
 h5,
 h6 {
-	color: var(--fg);
-	font-weight: 650;
-	line-height: 1.3;
-	letter-spacing: -0.01em;
+	font-family: var(--font-serif);
+	font-weight: 600;
+	line-height: 1.35;
+	letter-spacing: 0.01em;
 	margin: 0 0 0.6em;
+	text-wrap: balance;
 }
 
 p {
@@ -103,36 +100,28 @@ img,
 video {
 	max-width: 100%;
 	height: auto;
-	border-radius: var(--radius);
 }
 
 hr {
 	border: none;
-	border-top: 1px solid var(--border);
-	margin: 3em 0;
+	border-top: 1px solid var(--rule);
+	margin: 2.5em 0;
 }
 
 code,
 kbd,
-samp {
+samp,
+pre {
 	font-family: var(--font-mono);
-	font-size: 0.875em;
 }
 
 :not(pre) > code {
-	padding: 0.15em 0.4em;
-	border-radius: 5px;
-	background: var(--bg-code);
-	border: 1px solid var(--border);
+	padding: 0.12em 0.38em;
+	border-radius: 3px;
+	background: var(--paper-sunk);
+	border: 1px solid var(--rule);
+	font-size: 0.85em;
 	white-space: nowrap;
-}
-
-kbd {
-	padding: 0.1em 0.45em;
-	border: 1px solid var(--border);
-	border-bottom-width: 2px;
-	border-radius: 5px;
-	background: var(--bg-subtle);
 }
 
 /* ==========================================================================
@@ -141,18 +130,14 @@ kbd {
 
 .container {
 	width: 100%;
-	max-width: var(--max-width);
+	max-width: var(--width-container);
 	margin-inline: auto;
-	padding-inline: 1.25rem;
-}
-
-.container--wide {
-	max-width: var(--wide-width);
+	padding-inline: 1.5rem;
 }
 
 main {
-	min-height: 60vh;
-	padding-block: 2.5rem 5rem;
+	min-height: 62vh;
+	padding-block: 3rem 6rem;
 }
 
 .sr-only {
@@ -167,42 +152,88 @@ main {
 	border: 0;
 }
 
+/* 编辑部风格的小标签：拉丁字母大写 + 字距 */
+.kicker {
+	display: inline-block;
+	font-family: var(--font-sans);
+	font-size: 0.6875rem;
+	font-weight: 600;
+	letter-spacing: 0.16em;
+	text-transform: uppercase;
+	color: var(--accent);
+	margin: 0 0 0.9rem;
+}
+
+.meta {
+	display: flex;
+	flex-wrap: wrap;
+	align-items: center;
+	gap: 0.55em;
+	font-family: var(--font-mono);
+	font-size: 0.75rem;
+	letter-spacing: 0.02em;
+	color: var(--ink-faint);
+	font-variant-numeric: tabular-nums;
+}
+
+.tag {
+	display: inline-block;
+	font-family: var(--font-mono);
+	font-size: 0.72rem;
+	letter-spacing: 0.03em;
+	color: var(--ink-muted);
+	border-bottom: 1px solid var(--rule-strong);
+	padding-bottom: 0.05em;
+	white-space: nowrap;
+}
+
+.tag:hover {
+	color: var(--accent);
+	border-bottom-color: var(--accent);
+}
+
 /* ==========================================================================
-   文章正文排版
+   正文排版（宋体，偏阅读）
    ========================================================================== */
 
 .prose {
-	font-size: 1.0625rem;
-	line-height: 1.85;
-	color: var(--fg);
+	max-width: var(--width-reading);
+	margin-inline: auto;
+	font-family: var(--font-serif);
+	font-size: 1.125rem;
+	line-height: 1.95;
+	color: var(--ink);
+	letter-spacing: 0.01em;
 }
 
-.prose > * + * {
-	margin-top: 0;
+.prose p {
+	margin: 0 0 1.5em;
 }
 
 .prose h2 {
-	font-size: 1.45em;
-	margin-top: 2.4em;
-	padding-bottom: 0.3em;
-	border-bottom: 1px solid var(--border);
+	font-size: 1.4em;
+	margin-top: 2.6em;
+	margin-bottom: 0.9em;
+	padding-top: 1.2em;
+	border-top: 1px solid var(--rule);
 }
 
 .prose h3 {
-	font-size: 1.2em;
+	font-size: 1.15em;
 	margin-top: 2em;
+	margin-bottom: 0.7em;
 }
 
 .prose h4 {
-	font-size: 1.05em;
+	font-size: 1em;
 	margin-top: 1.8em;
-	color: var(--fg-muted);
+	color: var(--ink-soft);
 }
 
 .prose ul,
 .prose ol {
-	margin: 0 0 1.2em;
-	padding-left: 1.4em;
+	margin: 0 0 1.5em;
+	padding-left: 1.3em;
 }
 
 .prose li {
@@ -210,14 +241,15 @@ main {
 }
 
 .prose li::marker {
-	color: var(--fg-faint);
+	color: var(--ink-faint);
 }
 
 .prose blockquote {
-	margin: 1.6em 0;
-	padding: 0.2em 0 0.2em 1.2em;
-	border-left: 3px solid var(--accent);
-	color: var(--fg-muted);
+	margin: 2em 0;
+	padding: 0.1em 0 0.1em 1.4em;
+	border-left: 1px solid var(--rule-strong);
+	color: var(--ink-soft);
+	font-style: normal;
 }
 
 .prose blockquote p:last-child {
@@ -229,48 +261,53 @@ main {
 	display: block;
 	overflow-x: auto;
 	border-collapse: collapse;
-	margin: 1.6em 0;
-	font-size: 0.95em;
+	margin: 2em 0;
+	font-family: var(--font-sans);
+	font-size: 0.85rem;
+	line-height: 1.6;
 }
 
 .prose th,
 .prose td {
-	padding: 0.55em 0.8em;
-	border: 1px solid var(--border);
+	padding: 0.6em 0.75em;
+	border-bottom: 1px solid var(--rule);
 	text-align: left;
 }
 
 .prose th {
-	background: var(--bg-subtle);
+	border-bottom: 1px solid var(--rule-strong);
 	font-weight: 600;
+	color: var(--ink-soft);
+	letter-spacing: 0.02em;
 }
 
 .prose img {
 	display: block;
-	margin: 1.8em auto;
+	margin: 2em auto;
 }
 
 .prose a {
-	text-decoration: underline;
-	text-decoration-color: color-mix(in srgb, var(--accent) 40%, transparent);
-	text-decoration-thickness: 1px;
-	text-underline-offset: 3px;
+	color: var(--accent);
+	border-bottom: 1px solid color-mix(in srgb, var(--accent) 35%, transparent);
 }
 
 .prose a:hover {
-	text-decoration-color: var(--accent);
+	border-bottom-color: var(--accent);
 }
 
-/* 标题锚点（Markdown 的 ## 自动生成 id） */
-.prose :is(h2, h3, h4) > a.anchor {
-	opacity: 0;
-	margin-left: 0.35em;
-	font-size: 0.8em;
-	text-decoration: none;
+.prose strong {
+	font-weight: 700;
 }
 
-.prose :is(h2, h3, h4):hover > a.anchor {
-	opacity: 0.5;
+/* 首字下沉：最重要的杂志感细节 */
+.prose > p:first-of-type::first-letter {
+	float: left;
+	font-family: var(--font-serif);
+	font-size: 2.9em;
+	line-height: 0.92;
+	font-weight: 600;
+	padding: 0.06em 0.12em 0 0;
+	color: var(--accent);
 }
 
 /* ==========================================================================
@@ -278,13 +315,13 @@ main {
    ========================================================================== */
 
 pre {
-	margin: 1.6em 0;
-	padding: 1em 1.15em;
-	border: 1px solid var(--border);
-	border-radius: var(--radius);
+	margin: 1.8em 0;
+	padding: 1.1em 1.2em;
+	border: 1px solid var(--rule);
+	border-radius: 4px;
 	overflow-x: auto;
-	font-size: 0.875rem;
-	line-height: 1.65;
+	font-size: 0.8125rem;
+	line-height: 1.7;
 	tab-size: 2;
 }
 
@@ -293,9 +330,8 @@ pre > code {
 	font-family: var(--font-mono);
 }
 
-/* Shiki 双主题：默认取 light，暗色模式下换成 dark 变量 */
 .astro-code {
-	background-color: var(--shiki-light-bg, var(--bg-code)) !important;
+	background-color: var(--shiki-light-bg, var(--paper-sunk)) !important;
 	color: var(--shiki-light);
 }
 
@@ -305,43 +341,12 @@ pre > code {
 }
 
 html[data-theme='dark'] .astro-code {
-	background-color: var(--shiki-dark-bg, var(--bg-code)) !important;
+	background-color: var(--shiki-dark-bg, var(--paper-sunk)) !important;
 	color: var(--shiki-dark);
 }
 
 html[data-theme='dark'] .astro-code span {
 	color: var(--shiki-dark);
-}
-
-/* ==========================================================================
-   通用小组件
-   ========================================================================== */
-
-.tag {
-	display: inline-block;
-	padding: 0.1em 0.55em;
-	border-radius: 999px;
-	border: 1px solid var(--border);
-	background: var(--bg-subtle);
-	color: var(--fg-muted);
-	font-size: 0.75rem;
-	line-height: 1.7;
-	white-space: nowrap;
-}
-
-.tag:hover {
-	color: var(--accent);
-	border-color: var(--accent);
-	text-decoration: none;
-}
-
-.meta {
-	color: var(--fg-faint);
-	font-size: 0.82rem;
-	display: flex;
-	flex-wrap: wrap;
-	align-items: center;
-	gap: 0.6em;
 }
 
 @media (prefers-reduced-motion: reduce) {

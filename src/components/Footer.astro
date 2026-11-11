@@ -1,61 +1,65 @@
 ---
-import { SITE_AUTHOR, SOCIAL_LINKS } from '../consts';
+import { SITE_AUTHOR } from '../consts';
 const year = new Date().getFullYear();
 ---
 
-<footer class="site-footer">
-	<div class="container container--wide footer-inner">
-		<p class="copyright">
-			© {year} {SITE_AUTHOR} · 用 <a href="https://astro.build">Astro</a> 构建
+<footer class="colophon">
+	<div class="container inner">
+		<p class="note">
+			© {year} {SITE_AUTHOR}
+			<span class="dot">·</span>
+			用 <a href="https://astro.build">Astro</a> 手写
+			<span class="dot">·</span>
+			<a href="/rss.xml">RSS</a>
 		</p>
-		<ul class="links">
-			{
-				SOCIAL_LINKS.map((link) => (
-					<li>
-						<a href={link.href} rel={link.href.startsWith('http') ? 'noopener noreferrer' : undefined}>
-							{link.label}
-						</a>
-					</li>
-				))
-			}
-		</ul>
+		<a class="top" href="#top">回到顶部 ↑</a>
 	</div>
 </footer>
 
 <style>
-	.site-footer {
-		border-top: 1px solid var(--border);
-		padding-block: 1.75rem;
-		color: var(--fg-faint);
-		font-size: 0.82rem;
+	.colophon {
+		border-top: 1px solid var(--rule);
+		padding-block: 2rem 2.5rem;
 	}
 
-	.footer-inner {
+	.inner {
 		display: flex;
 		flex-wrap: wrap;
-		align-items: center;
 		justify-content: space-between;
+		align-items: baseline;
 		gap: 0.75rem;
 	}
 
-	.copyright {
+	.note {
 		margin: 0;
+		font-family: var(--font-mono);
+		font-size: 0.72rem;
+		letter-spacing: 0.02em;
+		color: var(--ink-faint);
 	}
 
-	.links {
-		display: flex;
-		gap: 1rem;
-		margin: 0;
-		padding: 0;
-		list-style: none;
+	.dot {
+		margin-inline: 0.35em;
+		color: var(--rule-strong);
 	}
 
-	.links a {
-		color: var(--fg-muted);
+	.note a {
+		color: var(--ink-muted);
+		border-bottom: 1px solid var(--rule);
 	}
 
-	.links a:hover {
+	.note a:hover {
 		color: var(--accent);
-		text-decoration: none;
+		border-bottom-color: var(--accent);
+	}
+
+	.top {
+		font-family: var(--font-mono);
+		font-size: 0.72rem;
+		color: var(--ink-faint);
+	}
+
+	.top:hover {
+		color: var(--accent);
 	}
 </style>

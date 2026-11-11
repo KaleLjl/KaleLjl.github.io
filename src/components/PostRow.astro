@@ -1,0 +1,153 @@
+---
+import { postPath, tagSlug, type Post } from '../lib/posts';
+
+interface Props {
+	post: Post;
+	index?: number;
+	showDraft?: boolean;
+}
+
+const { post, index, showDraft = false } = Astro.props;
+const { title, description, pubDate, tags, draft } = post.data;
+
+const iso = pubDate.toISOString().slice(0, 10);
+const month = String(pubDate.getUTCMonth() + 1).padStart(2, '0');
+const day = String(pubDate.getUTCDate()).padStart(2, '0');
+---
+
+<article class="row">
+	{
+		index !== undefined && (
+			<span class="num" aria-hidden="true">
+				{String(index).padStart(2, '0')}
+			</span>
+		)
+	}
+
+	<div class="body">
+		<h3 class="title">
+			<a href={postPath(post)}>
+				{title}
+				{showDraft && draft && <span class="draft">草稿</span>}
+			</a>
+		</h3>
+		<p class="desc">{description}</p>
+		{
+			tags.length > 0 && (
+				<ul class="tags">
+					{tags.map((tag) => (
+						<li>
+							<a class="tag" href={`/tags/${tagSlug(tag)}/`}>
+								{tag}
+							</a>
+						</li>
+					))}
+				</ul>
+			)
+		}
+	</div>
+
+	<time class="date" datetime={iso}>
+		<span class="date-md">{month}.{day}</span>
+		<span class="date-y">{pubDate.getUTCFullYear()}</span>
+	</time>
+</article>
+
+<style>
+	.row {
+		display: grid;
+		grid-template-columns: 2.5rem minmax(0, 1fr) auto;
+		gap: 0 1.25rem;
+		padding: 1.5rem 0;
+		border-bottom: 1px solid var(--rule);
+	}
+
+	.num {
+		font-family: var(--font-mono);
+		font-size: 0.72rem;
+		color: var(--ink-faint);
+		padding-top: 0.55em;
+		font-variant-numeric: tabular-nums;
+	}
+
+	.title {
+		margin: 0 0 0.35rem;
+		font-family: var(--font-serif);
+		font-size: 1.15rem;
+		font-weight: 600;
+		line-height: 1.5;
+	}
+
+	.title a {
+		color: var(--ink);
+	}
+
+	.title a:hover {
+		color: var(--accent);
+	}
+
+	.desc {
+		margin: 0 0 0.6rem;
+		font-size: 0.9rem;
+		line-height: 1.75;
+		color: var(--ink-muted);
+		display: -webkit-box;
+		-webkit-line-clamp: 2;
+		line-clamp: 2;
+		-webkit-box-orient: vertical;
+		overflow: hidden;
+	}
+
+	.tags {
+		display: flex;
+		flex-wrap: wrap;
+		gap: 0.7rem;
+		margin: 0;
+		padding: 0;
+		list-style: none;
+	}
+
+	.date {
+		display: flex;
+		flex-direction: column;
+		align-items: flex-end;
+		padding-top: 0.35em;
+		font-family: var(--font-mono);
+		font-size: 0.72rem;
+		line-height: 1.5;
+		color: var(--ink-faint);
+		font-variant-numeric: tabular-nums;
+	}
+
+	.date-y {
+		color: var(--rule-strong);
+	}
+
+	.draft {
+		margin-left: 0.5rem;
+		padding: 0.05em 0.4em;
+		border: 1px solid var(--accent);
+		border-radius: 2px;
+		font-family: var(--font-mono);
+		font-size: 0.62rem;
+		font-weight: 400;
+		color: var(--accent);
+		vertical-align: 0.15em;
+	}
+
+	@media (max-width: 620px) {
+		.row {
+			grid-template-columns: minmax(0, 1fr) auto;
+			gap: 0 1rem;
+			padding: 1.25rem 0;
+		}
+
+		.num {
+			display: none;
+		}
+
+		.title {
+			font-size: 1.05rem;
+		}
+	}
+</style>

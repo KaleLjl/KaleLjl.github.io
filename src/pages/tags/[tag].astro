@@ -1,6 +1,6 @@
 ---
 import BaseLayout from '../../layouts/BaseLayout.astro';
-import PostCard from '../../components/PostCard.astro';
+import PostRow from '../../components/PostRow.astro';
 import { getPosts, getTags, tagSlug } from '../../lib/posts';
 
 export async function getStaticPaths() {
@@ -18,30 +18,42 @@ export async function getStaticPaths() {
 const { tag, count, posts } = Astro.props;
 ---
 
-<BaseLayout title={`标签：${tag}`} description={`标签「${tag}」下的 ${count} 篇文章。`} wide>
-	<p class="back"><a href="/tags/">← 全部标签</a></p>
-	<h1 class="page-title">{tag}</h1>
-	<p class="page-desc">{count} 篇文章</p>
+<BaseLayout title={`标签：${tag}`} description={`标签「${tag}」下的 ${count} 篇文章。`}>
+	<p class="back"><a href="/tags/">← 标签索引</a></p>
 
-	<div class="post-list">
-		{posts.map((post) => <PostCard post={post} showDraft />)}
+	<header class="page-head">
+		<p class="kicker">Tagged</p>
+		<h1>{tag}</h1>
+		<p class="meta">{count} 篇文章</p>
+	</header>
+
+	<div class="rows">
+		{posts.map((post, i) => <PostRow post={post} index={i + 1} showDraft />)}
 	</div>
 </BaseLayout>
 
 <style>
 	.back {
-		margin: 0 0 1rem;
-		font-size: 0.85rem;
+		margin: 0 0 1.25rem;
+		font-family: var(--font-mono);
+		font-size: 0.72rem;
 	}
 
-	.page-title {
-		margin-bottom: 0.2rem;
-		font-size: 1.8rem;
+	.back a {
+		color: var(--ink-faint);
 	}
 
-	.page-desc {
-		color: var(--fg-muted);
-		font-size: 0.9rem;
-		margin-bottom: 1.5rem;
+	.back a:hover {
+		color: var(--accent);
+	}
+
+	.page-head {
+		padding-bottom: 1.5rem;
+		border-bottom: 1px solid var(--rule-strong);
+	}
+
+	.page-head h1 {
+		margin: 0 0 0.4rem;
+		font-size: clamp(1.6rem, 4.5vw, 2rem);
 	}
 </style>
