@@ -48,6 +48,10 @@ html {
 }
 
 body {
+	display: flex;
+	flex-direction: column;
+	min-height: 100vh;
+	min-height: 100dvh;
 	margin: 0;
 	background: var(--paper);
 	color: var(--ink);
@@ -124,6 +128,7 @@ html[data-theme='dark'] :not(pre) > code {
 }
 
 main {
+	flex: 1 0 auto;
 	padding: 2rem 0 4rem;
 }
 
