@@ -1,0 +1,125 @@
+---
+import BaseLayout from '../layouts/BaseLayout.astro';
+import PostCard from '../components/PostCard.astro';
+import { getPosts, getTags } from '../lib/posts';
+import { SITE_TITLE, SITE_DESCRIPTION } from '../consts';
+
+const posts = await getPosts();
+const tags = await getTags();
+const latest = posts.slice(0, 6);
+const total = posts.length;
+---
+
+<BaseLayout wide>
+	<section class="hero">
+		<h1>{SITE_TITLE}</h1>
+		<p class="lead">{SITE_DESCRIPTION}</p>
+		<p class="meta-line">
+			共 {total} 篇 · {tags.length} 个标签 ·
+			<a href="/rss.xml">订阅 RSS</a>
+		</p>
+	</section>
+
+	<section class="section">
+		<div class="section-head">
+			<h2>最近更新</h2>
+			<a class="more" href="/posts/">全部文章 →</a>
+		</div>
+		<div class="post-list">
+			{latest.map((post) => <PostCard post={post} showDraft />)}
+		</div>
+	</section>
+
+	{
+		tags.length > 0 && (
+			<section class="section">
+				<div class="section-head">
+					<h2>标签</h2>
+					<a class="more" href="/tags/">全部标签 →</a>
+				</div>
+				<ul class="tag-cloud">
+					{tags.map(({ tag, count }) => (
+						<li>
+							<a class="tag" href={`/tags/${tag.toLowerCase().replace(/\s+/g, '-')}/`}>
+								{tag}
+								<span class="count">{count}</span>
+							</a>
+						</li>
+					))}
+				</ul>
+			</section>
+		)
+	}
+</BaseLayout>
+
+<style>
+	.hero {
+		padding: 2.5rem 0 1rem;
+		max-width: 36rem;
+	}
+
+	.hero h1 {
+		font-size: clamp(1.9rem, 5vw, 2.5rem);
+		margin-bottom: 0.5rem;
+		letter-spacing: -0.02em;
+	}
+
+	.lead {
+		color: var(--fg-muted);
+		font-size: 1.05rem;
+		margin-bottom: 0.75rem;
+	}
+
+	.meta-line {
+		color: var(--fg-faint);
+		font-size: 0.82rem;
+		margin: 0;
+	}
+
+	.section {
+		margin-top: 3rem;
+	}
+
+	.section-head {
+		display: flex;
+		align-items: baseline;
+		justify-content: space-between;
+		gap: 1rem;
+		padding-bottom: 0.5rem;
+		border-bottom: 1px solid var(--border);
+	}
+
+	.section-head h2 {
+		margin: 0;
+		font-size: 0.95rem;
+		font-weight: 600;
+		letter-spacing: 0.02em;
+		color: var(--fg-muted);
+		text-transform: uppercase;
+	}
+
+	.more {
+		font-size: 0.82rem;
+		color: var(--fg-muted);
+	}
+
+	.more:hover {
+		color: var(--accent);
+		text-decoration: none;
+	}
+
+	.tag-cloud {
+		display: flex;
+		flex-wrap: wrap;
+		gap: 0.5rem;
+		margin: 1.25rem 0 0;
+		padding: 0;
+		list-style: none;
+	}
+
+	.count {
+		color: var(--fg-faint);
+		margin-left: 0.3em;
+		font-variant-numeric: tabular-nums;
+	}
+</style>

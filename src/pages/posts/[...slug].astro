@@ -1,0 +1,260 @@
+---
+import { render } from 'astro:content';
+import { Image } from 'astro:assets';
+import BaseLayout from '../../layouts/BaseLayout.astro';
+import FormattedDate from '../../components/FormattedDate.astro';
+import { getPosts, readingTime, tagSlug } from '../../lib/posts';
+
+export async function getStaticPaths() {
+	const posts = await getPosts();
+	return posts.map((post, index) => ({
+		params: { slug: post.id },
+		props: {
+			post,
+			prev: posts[index + 1] ?? null,
+			next: posts[index - 1] ?? null,
+		},
+	}));
+}
+
+const { post, prev, next } = Astro.props;
+const { Content, headings } = await render(post);
+const { title, description, pubDate, updatedDate, tags, draft, heroImage } = post.data;
+
+const minutes = readingTime(post.body);
+const toc = headings.filter((h) => h.depth === 2 || h.depth === 3);
+---
+
+<BaseLayout title={title} description={description} type="article" pubDate={pubDate}>
+	<article>
+		{
+			heroImage && (
+				<Image
+					class="hero"
+					src={heroImage}
+					alt=""
+					widths={[640, 1000]}
+					sizes="(max-width: 720px) 100vw, 640px"
+					loading="eager"
+				/>
+			)
+		}
+
+		<header class="post-header">
+			<div class="meta">
+				<FormattedDate date={pubDate} />
+				<span aria-hidden="true">·</span>
+				<span>{minutes} 分钟阅读</span>
+				{updatedDate && <span>· 更新于 <FormattedDate date={updatedDate} /></span>}
+				{draft && <span class="draft-badge">草稿（仅本地可见）</span>}
+			</div>
+
+			<h1>{title}</h1>
+
+			{
+				tags.length > 0 && (
+					<ul class="tags">
+						{tags.map((tag) => (
+							<li>
+								<a class="tag" href={`/tags/${tagSlug(tag)}/`}>
+									{tag}
+								</a>
+							</li>
+						))}
+					</ul>
+				)
+			}
+		</header>
+
+		{
+			toc.length >= 3 && (
+				<nav class="toc" aria-label="目录">
+					<p class="toc-title">目录</p>
+					<ol>
+						{toc.map((h) => (
+							<li class:list={[{ 'is-sub': h.depth === 3 }]}>
+								<a href={`#${h.slug}`}>{h.text}</a>
+							</li>
+						))}
+					</ol>
+				</nav>
+			)
+		}
+
+		<div class="prose">
+			<Content />
+		</div>
+
+		<footer class="post-footer">
+			{
+				tags.length > 0 && (
+					<p class="footer-label">
+						标签：
+						{tags.map((tag, i) => (
+							<>
+								{i > 0 && '、'}
+								<a href={`/tags/${tagSlug(tag)}/`}>{tag}</a>
+							</>
+						))}
+					</p>
+				)
+			}
+		</footer>
+	</article>
+
+	{
+		(prev || next) && (
+			<nav class="post-nav" aria-label="上一篇/下一篇">
+				{prev ? (
+					<a class="nav-item" href={`/posts/${prev.id}/`}>
+						<span class="nav-label">← 上一篇</span>
+						<span class="nav-title">{prev.data.title}</span>
+					</a>
+				) : (
+					<span />
+				)}
+				{next && (
+					<a class="nav-item nav-item--right" href={`/posts/${next.id}/`}>
+						<span class="nav-label">下一篇 →</span>
+						<span class="nav-title">{next.data.title}</span>
+					</a>
+				)}
+			</nav>
+		)
+	}
+</BaseLayout>
+
+<style>
+	.hero {
+		margin-bottom: 2rem;
+		border-radius: var(--radius);
+	}
+
+	.post-header {
+		margin-bottom: 2.5rem;
+		padding-bottom: 1.5rem;
+		border-bottom: 1px solid var(--border);
+	}
+
+	.post-header h1 {
+		margin: 0.6rem 0 0;
+		font-size: clamp(1.7rem, 4.5vw, 2.15rem);
+		letter-spacing: -0.02em;
+	}
+
+	.tags {
+		display: flex;
+		flex-wrap: wrap;
+		gap: 0.4rem;
+		margin: 0.9rem 0 0;
+		padding: 0;
+		list-style: none;
+	}
+
+	.draft-badge {
+		padding: 0.05em 0.45em;
+		border-radius: 4px;
+		background: #b4530920;
+		color: #b45309;
+		font-size: 0.72rem;
+		font-weight: 600;
+	}
+
+	.toc {
+		margin: 0 0 2.5rem;
+		padding: 1rem 1.15rem;
+		border: 1px solid var(--border);
+		border-radius: var(--radius);
+		background: var(--bg-subtle);
+		font-size: 0.88rem;
+	}
+
+	.toc-title {
+		margin: 0 0 0.6rem;
+		font-size: 0.75rem;
+		font-weight: 600;
+		letter-spacing: 0.08em;
+		text-transform: uppercase;
+		color: var(--fg-faint);
+	}
+
+	.toc ol {
+		margin: 0;
+		padding: 0;
+		list-style: none;
+	}
+
+	.toc li {
+		margin: 0.25rem 0;
+	}
+
+	.toc li.is-sub {
+		padding-left: 1rem;
+	}
+
+	.toc a {
+		color: var(--fg-muted);
+	}
+
+	.toc a:hover {
+		color: var(--accent);
+	}
+
+	.post-footer {
+		margin-top: 3rem;
+		padding-top: 1.5rem;
+		border-top: 1px solid var(--border);
+		font-size: 0.88rem;
+	}
+
+	.footer-label {
+		margin: 0;
+		color: var(--fg-muted);
+	}
+
+	.post-nav {
+		display: grid;
+		grid-template-columns: 1fr 1fr;
+		gap: 1rem;
+		margin-top: 3rem;
+	}
+
+	.nav-item {
+		display: flex;
+		flex-direction: column;
+		gap: 0.25rem;
+		padding: 0.9rem 1rem;
+		border: 1px solid var(--border);
+		border-radius: var(--radius);
+		color: var(--fg);
+	}
+
+	.nav-item:hover {
+		border-color: var(--accent);
+		text-decoration: none;
+	}
+
+	.nav-item--right {
+		text-align: right;
+		grid-column: 2;
+	}
+
+	.nav-label {
+		font-size: 0.75rem;
+		color: var(--fg-faint);
+	}
+
+	.nav-title {
+		font-size: 0.92rem;
+		font-weight: 550;
+	}
+
+	@media (max-width: 560px) {
+		.post-nav {
+			grid-template-columns: 1fr;
+		}
+		.nav-item--right {
+			grid-column: 1;
+		}
+	}
+</style>

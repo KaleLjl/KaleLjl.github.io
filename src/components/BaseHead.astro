@@ -1,0 +1,59 @@
+---
+import '../styles/global.css';
+import { SITE_TITLE } from '../consts';
+
+interface Props {
+	title: string;
+	description: string;
+	type?: 'website' | 'article';
+	image?: string;
+	pubDate?: Date;
+}
+
+const { title, description, type = 'website', image, pubDate } = Astro.props;
+
+const canonical = new URL(Astro.url.pathname, Astro.site);
+const ogImage = image ? new URL(image, Astro.site) : new URL('/og-default.svg', Astro.site);
+const fullTitle = title === SITE_TITLE ? title : `${title} · ${SITE_TITLE}`;
+---
+
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<link rel="icon" href="/favicon.svg" type="image/svg+xml" />
+<link rel="sitemap" href="/sitemap-index.xml" />
+<link
+	rel="alternate"
+	type="application/rss+xml"
+	title={SITE_TITLE}
+	href={new URL('rss.xml', Astro.site)}
+/>
+<meta name="generator" content={Astro.generator} />
+<link rel="canonical" href={canonical} />
+
+<title>{fullTitle}</title>
+<meta name="description" content={description} />
+<meta name="author" content="KaleLjl" />
+
+<meta property="og:type" content={type} />
+<meta property="og:url" content={canonical} />
+<meta property="og:title" content={fullTitle} />
+<meta property="og:description" content={description} />
+<meta property="og:image" content={ogImage} />
+<meta property="og:locale" content="zh_CN" />
+{pubDate && <meta property="article:published_time" content={pubDate.toISOString()} />}
+
+<meta name="twitter:card" content="summary_large_image" />
+<meta name="twitter:title" content={fullTitle} />
+<meta name="twitter:description" content={description} />
+<meta name="twitter:image" content={ogImage} />
+
+<!-- 在首屏渲染前定好主题，避免闪白 -->
+<script is:inline>
+	(function () {
+		try {
+			var stored = localStorage.getItem('theme');
+			var prefersDark = window.matchMedia('(prefers-color-scheme: dark)').matches;
+			document.documentElement.dataset.theme = stored || (prefersDark ? 'dark' : 'light');
+		} catch (e) {}
+	})();
+</script>
