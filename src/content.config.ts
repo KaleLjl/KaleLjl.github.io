@@ -10,8 +10,6 @@ const posts = defineCollection({
 			description: z.string(),
 			pubDate: z.coerce.date(),
 			updatedDate: z.coerce.date().optional(),
-			// 建议用英文短标签，会直接出现在 URL 里
-			tags: z.array(z.string()).default([]),
 			// true 时只有本地 dev 能看到，构建产物里不会出现
 			draft: z.boolean().default(false),
 			heroImage: image().optional(),

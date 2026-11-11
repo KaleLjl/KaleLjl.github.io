@@ -2,9 +2,6 @@
 title: 写作指南：这个博客怎么加文章
 description: frontmatter 字段说明、Markdown 语法示例，以及发布流程。既是备忘也是排版测试页。
 pubDate: 2026-11-10
-tags:
-  - meta
-  - markdown
 ---
 
 这篇文章既是对自己的备忘，也顺便测试一下各种 Markdown 元素在站内的渲染效果。
@@ -25,7 +22,6 @@ src/content/posts/my-first-post.md  →  /posts/my-first-post/
 | `description` | 是 | 摘要，用于列表页、SEO、RSS |
 | `pubDate` | 是 | 发布日期，`YYYY-MM-DD` |
 | `updatedDate` | 否 | 更新日期，会在文首显示「更新于」 |
-| `tags` | 否 | 标签数组，建议用英文短词 |
 | `draft` | 否 | `true` 时只在本地 dev 可见 |
 
 一个完整的开头长这样：
@@ -36,9 +32,6 @@ title: 文章标题
 description: 一句话摘要
 pubDate: 2026-11-10
 updatedDate: 2026-11-12
-tags:
-  - astro
-  - tooling
 draft: false
 ---
 ```
@@ -78,7 +71,7 @@ git push         # 推送后 GitHub Actions 自动构建并上线
 ```ts
 type Post = {
 	title: string;
-	tags: string[];
+	description: string;
 };
 
 export function slugify(input: string): string {

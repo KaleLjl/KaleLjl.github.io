@@ -11,19 +11,18 @@
 title: 标题
 description: 一句话摘要（用于列表页、SEO、RSS）
 pubDate: 2026-11-11
-tags: [astro, tooling]
 draft: false
 ---
 ```
 
 - `draft: true` → 只在 `npm run dev` 出现，不进构建产物
-- 标签建议英文小写单词，会直接进 URL（`/tags/astro/`）
+- 没有标签系统，不要再加回来
 - 需要图片就用 `heroImage`（放 `src/assets/`）或 Markdown 内联图片
 
 ## 代码结构
 
 - `src/consts.ts` — 站点标题、描述、导航、社交链接
-- `src/lib/posts.ts` — 取文章 / 标签 / 阅读时长 / tag slug 的唯一入口
+- `src/lib/posts.ts` — 取文章 / 阅读时长的唯一入口
 - `src/styles/global.css` — 全部设计变量与正文排版（`--accent` 等）
 - `src/layouts/BaseLayout.astro` — 页面骨架，props: title/description/type/wide
 - 深色模式：`html[data-theme]` + CSS 变量，脚本内联在 `BaseHead` / `Header`

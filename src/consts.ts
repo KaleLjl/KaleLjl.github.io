@@ -8,8 +8,7 @@ export const SITE_LANG = 'zh-CN';
 
 // 页面导航
 export const NAV_LINKS = [
-	{ href: '/posts/', label: '文章' },
-	{ href: '/tags/', label: '标签' },
+	{ href: '/posts/', label: '归档' },
 	{ href: '/about/', label: '关于' },
 ];
 

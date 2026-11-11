@@ -25,11 +25,10 @@ src/
 ├── content/posts/         # 文章（你只需要动这里）
 ├── components/            # 头部、页脚、文章卡片等
 ├── layouts/BaseLayout.astro
-├── lib/posts.ts           # 取文章、标签、阅读时长
+├── lib/posts.ts           # 取文章、阅读时长
 ├── pages/
 │   ├── index.astro        # 首页
 │   ├── posts/             # 文章列表 + 详情
-│   ├── tags/              # 标签页
 │   ├── about.astro
 │   └── rss.xml.js
 └── styles/global.css      # 设计变量与排版
