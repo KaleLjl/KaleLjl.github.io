@@ -48,6 +48,6 @@ GitHub Pages。首次部署需要在仓库 **Settings → Pages → Source** 里
 ## 换到自定义域名
 
 1. 在 `public/` 下新建 `CNAME` 文件，内容写你的域名（如 `blog.example.com`）
-2. DNS 加一条 `CNAME` 记录指向 `kalleljl.github.io`
+2. DNS 加一条 `CNAME` 记录指向 `kaleljl.github.io`
 3. 仓库 Settings → Pages 勾选 **Enforce HTTPS**
 4. 把 `astro.config.mjs` 的 `site` 改成新域名
