@@ -3,33 +3,17 @@ import { postPath, type Post } from '../lib/posts';
 
 interface Props {
 	post: Post;
-	variant?: 'index' | 'archive';
 	showDraft?: boolean;
 }
 
-const { post, variant = 'index', showDraft = false } = Astro.props;
-const { title, pubDate, draft } = post.data;
-
-const iso = pubDate.toISOString().slice(0, 10);
-const dateLabel = `${pubDate.getUTCFullYear()}-${String(pubDate.getUTCMonth() + 1).padStart(2, '0')}-${String(pubDate.getUTCDate()).padStart(2, '0')}`;
+const { post, showDraft = false } = Astro.props;
+const { title, draft } = post.data;
 ---
 
-{
-	variant === 'index' ? (
-		<p class="item item--index">
-			<a href={postPath(post)}>{title}</a>
-			{showDraft && draft && <span class="draft"> (草稿)</span>}
-		</p>
-	) : (
-		<p class="item item--archive">
-			<a href={postPath(post)}>{title}</a>
-			{showDraft && draft && <span class="draft"> (草稿)</span>}
-			<time class="date" datetime={iso}>
-				{dateLabel}
-			</time>
-		</p>
-	)
-}
+<p class="item">
+	<a href={postPath(post)}>{title}</a>
+	{showDraft && draft && <span class="draft"> (草稿)</span>}
+</p>
 
 <style>
 	.item {
@@ -50,29 +34,6 @@ const dateLabel = `${pubDate.getUTCFullYear()}-${String(pubDate.getUTCMonth() + 
 		margin-right: 0.55em;
 		background: var(--bullet);
 		vertical-align: 0.18em;
-	}
-
-	.item--archive {
-		display: flex;
-		align-items: baseline;
-		gap: 0.5rem;
-		text-indent: 0;
-		padding-left: 0.95rem;
-	}
-
-	.item--archive::before {
-		flex: none;
-		margin-left: -0.95rem;
-	}
-
-	.item--archive a {
-		flex: 1;
-	}
-
-	.date {
-		flex: none;
-		color: var(--ink-faint);
-		font-variant-numeric: tabular-nums;
 	}
 
 	.draft {

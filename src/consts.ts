@@ -7,10 +7,7 @@ export const SITE_AUTHOR = 'KaleLjl';
 export const SITE_LANG = 'zh-CN';
 
 // 页面导航
-export const NAV_LINKS = [
-	{ href: '/posts/', label: '归档' },
-	{ href: '/about/', label: '关于' },
-];
+export const NAV_LINKS = [{ href: '/about/', label: '关于' }];
 
 // 社交链接：不需要的留空数组即可
 export const SOCIAL_LINKS = [

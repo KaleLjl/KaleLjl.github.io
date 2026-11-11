@@ -31,10 +31,6 @@ const picks = posts.slice(0, 2);
 		{posts.map((post) => <PostRow post={post} showDraft />)}
 		{posts.length === 0 && <p class="small intro">还没有文章。</p>}
 	</section>
-
-	<p class="small footnote">
-		<a href="/posts/">按时间归档</a> · <a href="/rss.xml">RSS 订阅</a>
-	</p>
 </BaseLayout>
 
 <style>
@@ -44,9 +40,5 @@ const picks = posts.slice(0, 2);
 
 	.list {
 		margin-bottom: 2rem;
-	}
-
-	.footnote {
-		color: var(--ink-muted);
 	}
 </style>
