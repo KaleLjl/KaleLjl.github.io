@@ -4,17 +4,23 @@
 
 ## 加文章
 
-在 `src/content/posts/` 新建 `.md`，文件名即 URL slug（用英文短横线）：
+日常走 `./blog.sh`（详见使用说明.md 〇节）：`add` → `check` → `build` → `publish`。
+文章先放 `inbox/`（已 gitignore，草稿不会推上公开仓库）。
+脚本会补 `pubDate`、把远程图片下载到本地、构建失败时退回 inbox。
+
+手动加也可以：在 `src/content/posts/` 新建 `.md`，**文件名就是标题**（也决定 URL）：
 
 ```yaml
 ---
-title: 标题
-description: 一句话摘要（用于列表页、SEO、RSS）
+description: 一句话摘要（用于 SEO、RSS）
 pubDate: 2026-11-11
 draft: false
 ---
 ```
 
+- 不写 `title`：标题 = 文件名；文件名里的标点会被删掉（`你好，世界` → `你好世界`），英文变小写、空格变 `-`
+- 标题需要保留标点 / 想要英文 URL 时才写 `title`；想要英文 URL 但标题用中文时写 `slug`
+- 中文文件名会让 URL 显示为编码形式（`/posts/%E4%BD%A0.../`），功能正常，仅裸链接观感差
 - `draft: true` → 只在 `npm run dev` 出现，不进构建产物
 - 没有标签系统，不要再加回来
 - 需要图片就用 `heroImage`（放 `src/assets/`）或 Markdown 内联图片

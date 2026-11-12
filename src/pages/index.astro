@@ -1,7 +1,7 @@
 ---
 import BaseLayout from '../layouts/BaseLayout.astro';
 import PostRow from '../components/PostRow.astro';
-import { getPosts, postPath } from '../lib/posts';
+import { getPosts, postPath, postTitle } from '../lib/posts';
 
 const posts = await getPosts();
 
@@ -19,7 +19,7 @@ const picks = posts.slice(0, 2);
 				{picks.map((post, i) => (
 					<>
 						{i > 0 && (i === picks.length - 1 ? '，或者 ' : '、')}
-						<a href={postPath(post)}>《{post.data.title}》</a>
+						<a href={postPath(post)}>《{postTitle(post)}》</a>
 					</>
 				))}
 				。

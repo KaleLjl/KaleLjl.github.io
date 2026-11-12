@@ -1,5 +1,5 @@
 ---
-import { postPath, type Post } from '../lib/posts';
+import { postPath, postTitle, type Post } from '../lib/posts';
 
 interface Props {
 	post: Post;
@@ -7,7 +7,8 @@ interface Props {
 }
 
 const { post, showDraft = false } = Astro.props;
-const { title, draft } = post.data;
+const { draft } = post.data;
+const title = postTitle(post);
 ---
 
 <p class="item">

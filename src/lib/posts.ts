@@ -15,6 +15,11 @@ export function postPath(post: Post): string {
 	return `/posts/${post.id}/`;
 }
 
+/** 标题：frontmatter 里的 title，缺省时用文件名（slug 化后的 id） */
+export function postTitle(post: Post): string {
+	return post.data.title ?? post.id;
+}
+
 /** 中文按 ~350 字/分钟，英文按 ~200 词/分钟估算 */
 export function readingTime(body: string | undefined): number {
 	if (!body) return 1;

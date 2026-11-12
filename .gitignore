@@ -18,6 +18,9 @@ pnpm-debug.log*
 # macOS
 .DS_Store
 
+# 未发布的文章收件箱（公开仓库，草稿不能推上去）
+inbox/
+
 # editors
 .vscode/*
 !.vscode/extensions.json

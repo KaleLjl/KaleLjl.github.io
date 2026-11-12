@@ -13,8 +13,8 @@ npm run preview    # 预览构建结果
 
 ## 写新文章
 
-在 `src/content/posts/` 新建 `.md` 文件，frontmatter 格式见
-[`src/content/posts/writing-guide.md`](src/content/posts/writing-guide.md)。
+推荐用项目脚本：`./blog.sh add 文章.md` → `./blog.sh publish`（自动检查字段、把远程图片下载到本地、构建、推送）。
+也可手动：在 `src/content/posts/` 新建 `.md` 文件，**文件名就是标题**，frontmatter 格式见 [`使用说明.md`](使用说明.md)。
 
 ## 目录结构
 
