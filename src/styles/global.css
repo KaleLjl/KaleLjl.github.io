@@ -196,8 +196,9 @@ main {
 }
 
 .prose blockquote {
-	margin: 1.4em 0;
-	padding-left: 1.6em;
+	margin: 1.6em 0;
+	padding: 0.1em 0 0.1em 1.4em;
+	border-left: 3px solid var(--bullet);
 	color: var(--ink-soft);
 }
 
@@ -228,7 +229,10 @@ html[data-theme='dark'] .prose th {
 .prose img {
 	display: block;
 	max-width: 100%;
-	margin: 1.5em 0;
+	/* 竖图（书影等）限高居中，避免在正文栏里拉成超长竖条 */
+	max-height: 24rem;
+	width: auto;
+	margin: 1.5em auto;
 }
 
 .prose a {
