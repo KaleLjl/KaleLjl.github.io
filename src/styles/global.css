@@ -239,6 +239,16 @@ html[data-theme='dark'] .prose th {
 	text-decoration: underline;
 }
 
+.prose mark {
+	background-color: rgba(255, 235, 59, 0.25);
+	color: inherit;
+	padding: 0.1em 0.2em;
+}
+
+html[data-theme='dark'] .prose mark {
+	background-color: rgba(255, 235, 59, 0.2);
+}
+
 /* ---------------------------------------------------------------- 代码块 */
 
 pre {
